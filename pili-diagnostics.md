@@ -27,14 +27,14 @@ Host: portal.qiniu.io
 ```
 cover取值，与排障流行为类型（推流、转流、播流）的任务分析对应表
 
-cover | publish(001) | internal source(010) | play(100)
--- | --
-1(001) | <center>yes<center/> | <center>-<center/> | <center>-<center/>
-2(010) | <center>-<center/> | <center>yes<center/> | <center>-<center/>
-4(100) | <center>-<center/> | <center>-<center/> | <center>yes<center/>
-3(011) | <center>yes<center/> | <center>yes<center/> | <center>-<center/>
-6(110) | <center>-<center/> | <center>yes<center/> | <center>yes<center/>
-7(111) | <center>yes<center/> | <center>yes<center/> | <center>yes<center/>
+|cover | publish(001) | internal source(010) | play(100) |
+| :--- | :-----: | :------: | :------: |
+| 1(001) | <center>yes<center/> | <center>-<center/> | <center>-<center/>
+| 2(010) | <center>-<center/> | <center>yes<center/> | <center>-<center/>
+| 4(100) | <center>-<center/> | <center>-<center/> | <center>yes<center/>
+| 3(011) | <center>yes<center/> | <center>yes<center/> | <center>-<center/>
+| 6(110) | <center>-<center/> | <center>yes<center/> | <center>yes<center/>
+| 7(111) | <center>yes<center/> | <center>yes<center/> | <center>yes<center/>
 
 返回包
 ```
