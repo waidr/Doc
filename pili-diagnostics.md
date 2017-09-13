@@ -9,6 +9,7 @@ pili-diagnostics
 - [获取指定流统计信息 GET /v1/diag/jobs/{jobid}/statistics/{streamid}](#6)
 - [获取指定流线性数据 GET /v1/diag/jobs/{JobID}/qos/{streamID}](#7)
 - [获取流线性数据 GET /v1/diag/jobs/{JobID}/qos](#8)
+- [参数取值列表](#100)
 
 
 <h4 id="1">新增排障job</h4>
@@ -25,16 +26,6 @@ Host: portal.qiniu.io
   "cover": <Int>
 }
 ```
-cover取值，与排障流行为类型（推流、转流、播流）的任务分析对应表
-
-|cover | publish(001) | internal source(010) | play(100) |
-| :--- | :-----: | :------: | :------: |
-| 1(001) | <center>yes<center/> | <center>-<center/> | <center>-<center/>
-| 2(010) | <center>-<center/> | <center>yes<center/> | <center>-<center/>
-| 4(100) | <center>-<center/> | <center>-<center/> | <center>yes<center/>
-| 3(011) | <center>yes<center/> | <center>yes<center/> | <center>-<center/>
-| 6(110) | <center>-<center/> | <center>yes<center/> | <center>yes<center/>
-| 7(111) | <center>yes<center/> | <center>yes<center/> | <center>yes<center/>
 
 返回包
 ```
@@ -139,8 +130,9 @@ Host: portal.qiniu.io
     "isp":"<isp>",
     "province":"<province>",
     "limit":<Int>,
-    "method":"<method>",
-    "onlyNodes":<Int: 0/1>
+    "method":"<Int: 1/2/4>",
+    "onlyNodes":<Int: 0/1>,
+    "mode":<Int:1/2/..>
 }
 
 ```
@@ -157,7 +149,7 @@ Host: portal.qiniu.io
             "province":"<province>",
             "start":<UnixSecond>,
             "end":<UnixSecond>,
-            "method":"<method>"
+            "method":"<Int: 1/2/4>"
         }
         ...
     ],
@@ -165,7 +157,7 @@ Host: portal.qiniu.io
         {
             "parent":"<parent>",
             "node":"<node>",
-            "method":"<method>",
+            "method":"<Int: 1/2/4>",
             "remote":"<remote>",
             "local":"<local>",
             "isp":"<isp>",
@@ -203,7 +195,8 @@ Host: portal.qiniu.io
     "node":"<nodeID>",
     "isp":"<isp>",
     "province":"<province>",
-    "method":"<method>",
+    "method":"<Int: 1/2/4>",
+    "mode":<Int:1/2/..>
 }
 ```
 
@@ -215,7 +208,7 @@ Host: portal.qiniu.io
         {
             "parent":"<parent>",
             "node":"<node>",
-            "method":"<method>",
+            "method":"<Int: 1/2/4>",
             "remote":"<remote>",
             "local":"<local>",
             "isp":"<isp>",
@@ -251,7 +244,8 @@ Host: portal.qiniu.io
     "node":"<nodeID>",
     "isp":"<isp>",
     "province":"<province>",
-    "method":"<method>",
+    "method":"<Int: 1/2/4>",
+    "mode":"<Int: 1/2/..>"
 }
 ```
 
@@ -277,7 +271,7 @@ Host: portal.qiniu.io
     ...
     ]
     "reqID":"<reqID>",
-    "method":"<method>"
+    "method":"<Int: 1/2/4>"
 }
 ...
 ]
@@ -297,8 +291,9 @@ Host: portal.qiniu.io
     "node":"<nodeID>",
     "isp":"<isp>",
     "province":"<province>",
-    "method":"<method>",
-    "limit":<Int>
+    "method":"<Int: 1/2/4>",
+    "limit":<Int>,
+    "mode":"<Int: 1/2/..>"
 }
 ```
 
@@ -324,7 +319,7 @@ Host: portal.qiniu.io
     ...
     ]
     "reqID":"<reqID>",
-    "method":"<method>"
+    "method":"<Int: 1/2/4>"
 }
 ...
 ]
@@ -332,3 +327,35 @@ Host: portal.qiniu.io
 
 400{}
 ```
+
+<h3 id="100">参数取值列表</h3>
+
+----
+cover取值，任务覆盖流行为类型（推流、内部转发流、播流）表
+
+|cover | publish(001) | internal source(010) | play(100) |
+| :--- | :-----: | :------: | :------: |
+| 1(001) | yes | - | -
+| 2(010) | - | yes | -
+| 4(100) | - | - | yes
+| 3(011) | yes | yes | -
+| 6(110) | - | yes | yes
+| 7(111) | yes | yes | yes
+
+method取值表
+
+| method | description |
+| :--- | :---- |
+| 1(001) | publish(推流)
+| 2(010) | internal source(内部转发)
+| 3(100) | play(播流)
+
+mode取值,排序方式表
+
+| key（排序项） |  asc(升序) | desc（降序） | description
+| :--- | :-----: | :-----: | :---
+| 平均码率 | 1 | 101=1+100 | 平均码率升序mode=1;平均码率降序mode=101
+| 平均视频帧率 | 2 | 102 | |
+| 秒级码率标准差 | 3 | 103 | |
+| 秒级视频帧率标准差 | 4 | 104 | |
+| 单次连接持续时间 | 5 | 105 | |
