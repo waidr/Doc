@@ -8,7 +8,7 @@ pili-diagnostics
 - [获取流统计信息和相关节点信息 GET /v1/diag/jobs/{jobid}/statistics](#5)
 - [获取指定流统计信息 GET /v1/diag/jobs/{jobid}/statistics/{streamid}](#6)
 - [获取指定流线性数据 GET /v1/diag/jobs/{JobID}/qos/{streamID}](#7)
-- [获取流线性数据 GET /v1/diag/jobs/{JobID}/qos](#8)
+- [获取流线性数据 GET /v1/diag/jobs/{JobID}/qos](#8) 【unused】 
 - [参数取值列表](#100)
 
 
@@ -196,7 +196,8 @@ Host: portal.qiniu.io
     "isp":"<isp>",
     "province":"<province>",
     "method":"<Int: 1/2/4>",
-    "mode":<Int:1/2/..>
+    "mode":<Int:1/2/..>,
+    "limit":<Int>
 }
 ```
 
@@ -245,7 +246,8 @@ Host: portal.qiniu.io
     "isp":"<isp>",
     "province":"<province>",
     "method":"<Int: 1/2/4>",
-    "mode":"<Int: 1/2/..>"
+    "mode":"<Int: 1/2/..>",
+    "limit":<Int>
 }
 ```
 
