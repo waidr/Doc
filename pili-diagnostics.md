@@ -125,7 +125,6 @@ Host: portal.qiniu.io
 GET /v1/diag/jobs/<jobid>/statistics
 Host: portal.qiniu.io
 {
-    "streamID":"<streamID>",
     "node":"<nodeID>",
     "isp":"<isp>",
     "province":"<province>",
