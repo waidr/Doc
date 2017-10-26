@@ -3,12 +3,12 @@ pili-diagnostics
 ## API
 - [新增排障job POST /v1/diag/jobs](#1)
 - [查询排障job列表 GET /v1/diag/jobs](#2)
-- [查询指定排障job信息 GET /v1/diag/jobs/{jobid}](#3)
-- [删除排障job DELETE /v1/diag/jobs/{jobid}](#4)
-- [获取流统计信息和相关节点信息 GET /v1/diag/jobs/{jobid}/statistics](#5)
-- [获取指定流统计信息 GET /v1/diag/jobs/{jobid}/statistics/{streamid}](#6)
-- [获取指定流线性数据 GET /v1/diag/jobs/{JobID}/qos/{streamID}](#7)
-- [获取流线性数据 GET /v1/diag/jobs/{JobID}/qos](#8) 【unused】 
+- [查询指定排障job信息 GET /v1/diag/jobs/{jobId}](#3)
+- [删除排障job DELETE /v1/diag/jobs/{jobId}](#4)
+- [获取流统计信息和相关节点信息 GET /v1/diag/jobs/{jobId}/statistics](#5)
+- [获取指定流统计信息 GET /v1/diag/jobs/{jobId}/statistics/{streamId}](#6)
+- [获取指定流质量timeline GET /v1/diag/jobs/{jobId}/qos/{streamId}](#7)
+- [获取指定流全局转发树 GET /v1/diag/jobs/{jobId}/tree/{streamId}](#8)
 - [参数取值列表](#100)
 
 
@@ -23,7 +23,8 @@ Host: portal.qiniu.io
   "streamID": "z1.hub.streamKey",
   "start": <UnixSecond>,
   "end": <UnixSecond>,
-  "cover": <Int>
+  "cover": <Int>,
+  "Ips": <sdk ips；多个ip以半角逗号隔开；当任务包含播流时此参数为必填>
 }
 ```
 
@@ -62,7 +63,8 @@ Host: portal.qiniu.io
         "streamID":"<streamID>",
         "start":<UnixSecond>,
         "end":<UnixSecond>,
-        "cover":<Int>
+        "cover":<Int>,
+        "ips":<SdkIps>
     }
     ...
 ]
@@ -93,7 +95,8 @@ Host: portal.qiniu.io
         "streamID":"<streamID>",
         "start":<UnixSecond>,
         "end":<UnixSecond>,
-        "cover":<Int>
+        "cover":<Int>,
+        "ips":<SdkIps>
     }
 }
 
@@ -148,13 +151,14 @@ Host: portal.qiniu.io
             "province":"<province>",
             "start":<UnixSecond>,
             "end":<UnixSecond>,
-            "method":"<Int: 1/2/4>"
+            "method":"<Int: 1/2/4>",
+            "idcId":"<idcId>""
         }
         ...
     ],
     "stream":[
         {
-            "parent":"<parent>",
+            "parent":"<remote nodeId | root | - >",
             "node":"<node>",
             "method":"<Int: 1/2/4>",
             "remote":"<remote>",
@@ -191,7 +195,7 @@ GET /v1/diag/jobs/<jobid>/statistics/<streamid>
 Host: portal.qiniu.io
 {
     "streamID":"<streamID>",
-    "node":"<nodeID>",
+    "node":"<nodeIdRegex>",
     "isp":"<isp>",
     "province":"<province>",
     "method":"<Int: 1/2/4>",
@@ -206,7 +210,7 @@ Host: portal.qiniu.io
 {
 [
         {
-            "parent":"<parent>",
+            "parent":"<remote nodeId | root | - >",
             "node":"<node>",
             "method":"<Int: 1/2/4>",
             "remote":"<remote>",
@@ -234,14 +238,14 @@ Host: portal.qiniu.io
 400{}
 ```
 
-<h4 id="7">获取指定流线性数据</h4>
+<h4 id="7">获取指定流质量timeline</h4>
 
 请求包
 ```
 GET /v1/diag/jobs/<JobID>/qos/<streamID>
 Host: portal.qiniu.io
 {
-    "node":"<nodeID>",
+    "node":"<nodeIdRegex>",
     "isp":"<isp>",
     "province":"<province>",
     "method":"<Int: 1/2/4>",
@@ -272,7 +276,8 @@ Host: portal.qiniu.io
     ...
     ]
     "reqID":"<reqID>",
-    "method":"<Int: 1/2/4>"
+    "method":"<Int: 1/2/4>",
+    "parent":"<remote nodeId | root | - >"
 }
 ...
 ]
@@ -281,47 +286,31 @@ Host: portal.qiniu.io
 400{}
 ```
 
-<h4 id="8">获取流线性数据</h4>
+<h4 id="8">获取指定流全局转发树</h4>
 
 请求包
 ```
-GET /v1/diag/jobs/<JobID>/qos
+GET /v1/diag/jobs/{jobId}/tree/{streamId}
 Host: portal.qiniu.io
-{
-	"streamID":"<streamID>"
-    "node":"<nodeID>",
-    "isp":"<isp>",
-    "province":"<province>",
-    "method":"<Int: 1/2/4>",
-    "limit":<Int>,
-    "mode":"<Int: 1/2/..>"
-}
 ```
 
 返回包
 ```
 200
 {
-[ {
-    "node":"<node>",
-    "remote":"<remote>",
-    "isp":"<isp>",
-    "province":"<province>",
-    "streamID":"<streamID>",
-    "points":[
+[
     {
-    "time":<UnixSecond>,
-    "values":{
-    	"audioFPS":<Int>,
-    	"videoFPS":<Int>,
-    	"bps":<Int>
-    	}
+    "node":"<node>",
+    "parents":[
+        {
+        "node":<parent node | root | - >,
+        "reqId":<reqId>,
+        "start":<UnixSecond>,
+        "end":<UnixSecond>
+        }
+        ...
+        ]
     }
-    ...
-    ]
-    "reqID":"<reqID>",
-    "method":"<Int: 1/2/4>"
-}
 ...
 ]
 }
