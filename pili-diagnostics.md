@@ -152,7 +152,7 @@ Host: portal.qiniu.io
             "start":<UnixSecond>,
             "end":<UnixSecond>,
             "method":"<Int: 1/2/4>",
-            "idcId":"<idcId>""
+            "idcID":"<idcID>
         }
         ...
     ],
