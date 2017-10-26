@@ -64,7 +64,7 @@ Host: portal.qiniu.io
         "start":<UnixSecond>,
         "end":<UnixSecond>,
         "cover":<Int>,
-        "ips":<SdkIps>
+        "ips":<SdkIps,Max:10ip>
     }
     ...
 ]
@@ -301,10 +301,10 @@ Host: portal.qiniu.io
 [
     {
     "node":"<node>",
-    "parents":[
+    "remotes":[
         {
         "node":<parent node | root | - >,
-        "reqId":<reqId>,
+        "reqID":<reqID>,
         "start":<UnixSecond>,
         "end":<UnixSecond>
         }
