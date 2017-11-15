@@ -12,16 +12,16 @@ pili-diagnostics
 - [新增hub级别排障job POST /v1/diag/hub/jobs](#9)
 - [参数取值列表](#100)
 
-* 参数中加粗是必传参数
+> *参数中加粗的是必传参数*
 
 <h4 id="1">新增流级别排障job</h4>
 
 请求包
-```
+```markdown
 POST /v1/diag/jobs
 Host: portal.qiniu.io
 {
-  "**submitter**": "<who>",
+  "**submitter**" :<who>",
   "**streamID**": "<z1.hub.streamKey>",
   "**start**": <UnixSecond>,
   "**end**": <UnixSecond>,
@@ -42,7 +42,7 @@ Host: portal.qiniu.io
 <h4 id="9">新增hub级别排障job</h4>
 
 请求包
-```
+```markdown
 POST /v1/diag/hub/jobs
 Host: portal.qiniu.io
 {
@@ -71,7 +71,7 @@ Host: portal.qiniu.io
 <h4 id="2">查询排障job列表</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs
 Host: portal.qiniu.io
 {
@@ -118,7 +118,7 @@ Host: portal.qiniu.io
 <h4 id="3">查询指定排障job信息</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs/{jobid}
 Host: portal.qiniu.io
 {}
@@ -149,7 +149,7 @@ Host: portal.qiniu.io
 <h4 id="4">删除排障job</h4>
 
 请求包
-```
+```markdown
 DELETE /v1/diag/jobs/{jobid}
 Host: portal.qiniu.io
 {}
@@ -166,7 +166,7 @@ Host: portal.qiniu.io
 <h4 id="5">获取流统计信息和相关节点信息</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs/<jobid>/statistics
 Host: portal.qiniu.io
 {
@@ -265,15 +265,14 @@ Host: portal.qiniu.io
 <h4 id="6">获取指定流统计信息</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs/<jobid>/statistics/<streamid>
 Host: portal.qiniu.io
 {
-    "streamID":"<streamID>",
+    "**method**":"<Int: 1/2/4>",
     "node":"<nodeIdRegex>",
     "isp":"<isp>",
     "province":"<province>",
-    "method":"<Int: 1/2/4>",
     "mode":<Int:1/2/..>,
     "limit":<Int>
 }
@@ -316,14 +315,14 @@ Host: portal.qiniu.io
 <h4 id="7">获取指定流质量timeline</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs/<JobID>/qos/<streamID>
 Host: portal.qiniu.io
 {
+    "**method**":"<Int: 1/2/4>",
     "node":"<nodeIdRegex>",
     "isp":"<isp>",
     "province":"<province>",
-    "method":"<Int: 1/2/4>",
     "mode":"<Int: 1/2/..>",
     "limit":<Int>
 }
@@ -364,7 +363,7 @@ Host: portal.qiniu.io
 <h4 id="8">获取指定排障job全局转发树</h4>
 
 请求包
-```
+```markdown
 GET /v1/diag/jobs/{jobId}/tree
 Host: portal.qiniu.io
 ```
